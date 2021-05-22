@@ -1,14 +1,8 @@
 import Head from "next/head";
-import notion from '../notionclient'
-// import { Client } from "@notionhq/client"
-
-
-// Init client
-// const notion = new Client({
-//   auth: process.env.NOTION_TOKEN,
-// });
+import getContent from "../lib/getContent"
 
 export default function Home({data}) {
+  console.log(data)
   return (
     <div>
       <Head>
@@ -28,10 +22,6 @@ export async function getStaticProps() {
   const res = await fetch("http://localhost:3000/api/homework")
   const data = await res.json()
 
-  data.forEach(item => {
-    console.log("item", item.id)
-    
-  });
 
   return {
     props: {data}
