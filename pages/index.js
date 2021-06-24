@@ -3,7 +3,10 @@ import { Client } from "@notionhq/client";
 import styles from "../styles/Home.module.css";
 import Moment from "react-moment";
 
-export default function Home({ data }) {
+
+
+export default function Home({ data, info }) {
+  console.log(info)
   return (
     <div className={styles.container}>
       <Head>
@@ -20,6 +23,7 @@ export default function Home({ data }) {
         </h2>
       </div>
       {data.map((post) => (
+        console.log(post.id),
         <div key={post.id} className={styles.task}>
           <h3 className={styles.title}>Subject: {post.title}</h3>
           <ul>
@@ -34,7 +38,9 @@ export default function Home({ data }) {
   );
 }
 
+
 export async function getStaticProps() {
+  
   const notion = new Client({
     auth: process.env.NOTION_TOKEN,
   });
@@ -71,9 +77,18 @@ export async function getStaticProps() {
     };
   });
 
+  const block_id = "a1e83068-1eac-45bf-9cb6-186b9db3409b";
+  const res = await notion.blocks.children.list({
+    block_id: block_id,
+  });
+
+  console.log("res", res);
+  
   return {
     props: {
       data: meta,
+      info: res,
     },
   };
+
 }
